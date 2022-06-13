@@ -105,3 +105,30 @@ console.table(mensaje3);
 console.table(transferencia1);
 console.table(transferencia2);
 console.table(transferencia3);
+
+const clientes = [cliente1, cliente2, cliente3, {
+    id: 7,
+    id_gestor: 3,
+    usuario: 'cliente4',
+    password: 'cliente4',
+    correo: 'cliente4@gmail.com',
+    saldo: Math.random() * 1000
+}, {
+    id: 8,
+    id_gestor: 2,
+    usuario: 'cliente5',
+    password: 'cliente5',
+    correo: 'cliente5@gmail.com',
+    saldo: Math.random() * 1000
+} ];
+console.log('------- CLIENTES -------');
+for (const cliente of clientes) {
+    console.log(`id: ${cliente.id}`);
+    console.log(`usuario: ${cliente.usuario}`);
+    console.log(`correo: ${cliente.correo}`);
+    console.log(`password: ${cliente.password}`);
+    console.log(`saldo: ${cliente.saldo}`);
+    console.log(`id_gestor: ${cliente.id_gestor}`);
+    console.log('--------------------------------------');
+}
+console.log(cliente);
