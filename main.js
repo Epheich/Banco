@@ -93,18 +93,25 @@ const transferencia3 = {
 
 
 
-console.table(gestor1);
-console.table(gestor2);
-console.table(gestor3);
-console.table(cliente1);
-console.table(cliente2);
-console.table(cliente3);
-console.table(mensaje1);
-console.table(mensaje2);
-console.table(mensaje3);
-console.table(transferencia1);
-console.table(transferencia2);
-console.table(transferencia3);
+// console.table(gestor1);
+// console.table(gestor2);
+// console.table(gestor3);
+// console.table(cliente1);
+// console.table(cliente2);
+// console.table(cliente3);
+// console.table(mensaje1);
+// console.table(mensaje2);
+// console.table(mensaje3);
+// console.table(transferencia1);
+// console.table(transferencia2);
+// console.table(transferencia3);
+
+const gestores = [gestor1, gestor2, {
+    id: 3,
+    usuario: 'gestor3',
+    password: 'gestor3',
+    correo: 'gestor3@mail.com'
+}];
 
 const clientes = [cliente1, cliente2, cliente3, {
     id: 7,
@@ -121,14 +128,89 @@ const clientes = [cliente1, cliente2, cliente3, {
     correo: 'cliente5@gmail.com',
     saldo: Math.random() * 1000
 } ];
-console.log('------- CLIENTES -------');
-for (const cliente of clientes) {
-    console.log(`id: ${cliente.id}`);
-    console.log(`usuario: ${cliente.usuario}`);
-    console.log(`correo: ${cliente.correo}`);
-    console.log(`password: ${cliente.password}`);
-    console.log(`saldo: ${cliente.saldo}`);
-    console.log(`id_gestor: ${cliente.id_gestor}`);
-    console.log('--------------------------------------');
-}
-console.log(cliente);
+// console.log('--- GESTORES ---');
+// for (const gestor of gestores) {
+//     console.log(`id: ${gestor.id}`);
+//     console.log(`usuario: ${gestor.usuario}`);
+//     console.log(`password: ${gestor.password}`);
+//     console.log(`correo: ${gestor.correo}`);
+//     console.log('-----');
+// }
+// console.log('------- CLIENTES -------');
+// for (const cliente of clientes) {
+//     console.log(`id: ${cliente.id}`);
+//     console.log(`usuario: ${cliente.usuario}`);
+//     console.log(`correo: ${cliente.correo}`);
+//     console.log(`password: ${cliente.password}`);
+//     console.log(`saldo: ${cliente.saldo}`);
+//     console.log(`id_gestor: ${cliente.id_gestor}`);
+//     console.log('--------------------------------------');
+//}
+
+// console.log('------------------------------------------------------- JSON ------------------------------------------');
+
+// const gestoresJSON = JSON.stringify(gestores);
+// console.log(gestoresJSON);
+// console.log(gestoresJSON.length);
+
+// const cliente1JSON = JSON.stringify(cliente1);
+// console.log(cliente1JSON);
+
+const server = 'localhost:8085';
+
+const opciones = {
+    url: `http://${server}/ok`,
+    metodo: 'GET'
+};
+
+ajax(opciones, (data) => {
+    console.log(data);
+});
+
+
+const opcionesLogin = {
+    url: `http://${server}/login/gestor/`,
+    metodo: 'POST',
+    body: 'usuario=gestor1&password=gestor1',
+    cabeceras: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
+
+// realiza la petición de login del gestor
+ajax(opcionesLogin, (data) => {
+
+    // esta función se ejecuta cuando los datos han sido
+    // devueltos por el servicio
+
+    // convirtiendo el string en formato JSON a objeto de JavaScript
+    const respuesta = JSON.parse(data);
+
+    // guardamos el token
+    const token = respuesta.data.token;
+
+    // realizamos la solicitud para obtener todos los gestores
+
+    const opcionesObtenerGestores = {
+        url: 'http://localhost:8085/gestores/',
+        metodo: 'GET',
+        cabeceras: {
+            Authorization: `Basic ${token}`
+        }
+    }
+
+    ajax(opcionesObtenerGestores, (data) => {
+
+        // data tiene toda la información de los gestores en formato string
+        console.log(data);
+
+        // convertir a objeto de JavaScript
+        const respuesta = JSON.parse(data);
+
+        const gestores = respuesta.data;
+        mostrarGestores(gestores);
+
+        
+
+    });
+});
